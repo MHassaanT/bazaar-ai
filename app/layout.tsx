@@ -17,11 +17,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased selection:bg-blue-500/30 selection:text-blue-200">
-        <Navbar />
+        <div className="no-print">
+          <Navbar />
+        </div>
         <main className="min-h-screen">
           {children}
         </main>
-        <Footer />
+        <div className="no-print">
+          <Footer />
+        </div>
         <Toaster 
           position="bottom-right"
           toastOptions={{

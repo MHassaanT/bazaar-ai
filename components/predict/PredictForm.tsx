@@ -56,7 +56,17 @@ const PredictForm = () => {
       });
       
       setPredictionResult(response.data);
-      router.push('/results');
+      
+      const query = new URLSearchParams({
+        city: selectedCity,
+        product: selectedProduct!,
+        category: selectedCategory!,
+        type: selectedBusinessType,
+        month: targetMonth.toString(),
+        year: targetYear.toString()
+      }).toString();
+      
+      router.push(`/results?${query}`);
     } catch (err: any) {
       const msg = err.response?.data?.detail || "Failed to run prediction. Please ensure the backend is running and the model is trained.";
       setError(msg);
