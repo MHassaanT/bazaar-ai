@@ -80,6 +80,8 @@ function ResultsContent() {
   }, [predictionResult]);
 
   const handleShare = async () => {
+    if (!predictionResult) return;
+
     const shareData = {
       title: 'BazaarAI Market Analysis',
       text: `Market analysis for ${predictionResult.product} in ${predictionResult.city}: ${predictionResult.demand_label} demand, ${predictionResult.price_risk_label} price risk.`,
