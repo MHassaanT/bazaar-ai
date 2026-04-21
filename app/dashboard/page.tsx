@@ -24,7 +24,7 @@ export default function DashboardPage() {
     }
   }, [user]);
 
-  const handleDelete = async (id: str) => {
+  const handleDelete = async (id: string) => {
     try {
       await api.delete(`/api/history/${id}`);
       setHistory(h => h.filter(item => item.id !== id));
