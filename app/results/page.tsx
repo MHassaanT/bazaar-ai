@@ -211,6 +211,19 @@ function ResultsContent() {
           <InsightsPanel insights={predictionResult.insights} />
         </motion.div>
 
+        {searchParams.get('autoRecommend') === 'true' && (
+           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-gradient-to-br from-[#0e172e] to-[#060b18] border border-blue-500/30 rounded-3xl p-8 relative overflow-hidden">
+               <div className="flex items-center gap-2 mb-4">
+                  <div className="bg-amber-500/10 text-amber-500 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
+                     Pro Feature
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Smart Alternatives for {predictionResult.product}</h3>
+               </div>
+               <p className="text-gray-400 mb-6">Based on your Pro settings, our AI automatically scanned other cities and found top alternative opportunities.</p>
+               <Button onClick={() => router.push('/smart-recommendations')} className="bg-blue-600 hover:bg-blue-500 text-white">Generate Full City Ranking &rarr;</Button>
+           </motion.div>
+        )}
+
         <div className="flex justify-center pt-10 no-print">
           <Button variant="outline" size="lg" onClick={() => router.push('/explore')}>
             Compare with other cities →

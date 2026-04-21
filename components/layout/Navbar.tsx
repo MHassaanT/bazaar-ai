@@ -6,12 +6,14 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Menu, X } from 'lucide-react';
 import { Button, cn } from '../ui/Button';
+import { useAuth } from '@/lib/auth-context';
+import UserMenu from '@/components/auth/UserMenu';
 
 const NavLink = ({ href, children, active }: { href: string; children: React.ReactNode; active: boolean }) => (
   <Link 
     href={href}
     className={cn(
-      "relative px-4 py-2 text-sm font-medium transition-colors",
+      "relative px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap",
       active ? "text-blue-400" : "text-gray-400 hover:text-white"
     )}
   >
@@ -42,6 +44,8 @@ const Navbar = () => {
     { name: 'Home', href: '/' },
     { name: 'Predict', href: '/predict' },
     { name: 'Explore', href: '/explore' },
+    { name: 'Smart AI', href: '/smart-recommendations' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'About', href: '/about' },
   ];
 
@@ -74,10 +78,8 @@ const Navbar = () => {
               {item.name}
             </NavLink>
           ))}
-          <div className="ml-4 pl-4 border-l border-white/[0.1]">
-            <Link href="/predict">
-              <Button size="sm">Get Prediction</Button>
-            </Link>
+          <div className="ml-4 pl-4 border-l border-white/[0.1] flex items-center gap-3">
+             <AuthActions />
           </div>
         </div>
 
@@ -114,9 +116,9 @@ const Navbar = () => {
                 </Link>
               ))}
               <hr className="border-white/[0.06]" />
-              <Link href="/predict" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button className="w-full">Get Prediction</Button>
-              </Link>
+              <div onClick={() => setIsMobileMenuOpen(false)}>
+                 <AuthActions mobile />
+              </div>
             </div>
           </motion.div>
         )}
@@ -124,5 +126,30 @@ const Navbar = () => {
     </nav>
   );
 };
+
+function AuthActions({ mobile = false }: { mobile?: boolean }) {
+  const { user, loading } = useAuth();
+  
+  if (loading) return <div className="w-10 h-10 rounded-full bg-white/10 animate-pulse" />;
+  
+  if (user) {
+    return (
+       <div className={cn("flex", mobile ? "flex-col items-start gap-4" : "items-center")}>
+         <UserMenu />
+       </div>
+    );
+  }
+
+  return (
+    <div className={cn("flex gap-3", mobile ? "flex-col w-full" : "items-center")}>
+      <Link href="/auth/login" className={mobile ? "w-full" : ""}>
+         <Button variant="outline" className={mobile ? "w-full" : ""}>Sign In</Button>
+      </Link>
+      <Link href="/auth/signup" className={mobile ? "w-full" : ""}>
+         <Button className={mobile ? "w-full" : ""}>Get Started</Button>
+      </Link>
+    </div>
+  );
+}
 
 export default Navbar;

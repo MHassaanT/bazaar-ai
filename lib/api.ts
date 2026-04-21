@@ -17,6 +17,17 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// Add request interceptor
+api.interceptors.request.use(async (config) => {
+  const { auth } = await import('./firebase');
+  const user = auth.currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const predictDemand = (data: PredictRequest) => 
   api.post<PredictResponse>('/api/predict', data);
 
